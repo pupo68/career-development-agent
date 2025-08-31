@@ -1,0 +1,71 @@
+{
+    "Data Science": [
+      {
+        "name": "Google Data Analytics Professional Certificate",
+        "provider": "Google via Coursera",
+        "duration": "6 months",
+        "level": "Beginner",
+        "cost": "USD 39/month"
+      },
+      {
+        "name": "IBM Data Science Professional Certificate",
+        "provider": "IBM via Coursera",
+        "duration": "3-6 months",
+        "level": "Intermediate",
+        "cost": "USD 39/month"
+      },
+      {
+        "name": "Microsoft Certified: Azure Data Scientist Associate",
+        "provider": "Microsoft",
+        "duration": "Self-paced",
+        "level": "Advanced",
+        "cost": "USD 165/exam"
+      }
+    ],
+    "AI Engineering": [
+      {
+        "name": "TensorFlow Developer Certificate",
+        "provider": "Google",
+        "duration": "Self-paced",
+        "level": "Intermediate",
+        "cost": "USD 100/exam"
+      },
+      {
+        "name": "AWS Certified Machine Learning - Specialty",
+        "provider": "Amazon",
+        "duration": "Self-paced",
+        "level": "Advanced",
+        "cost": "USD 300/exam"
+      },
+      {
+        "name": "NVIDIA Deep Learning Institute Certifications",
+        "provider": "NVIDIA",
+        "duration": "Varies",
+        "level": "All levels",
+        "cost": "Varies"
+      }
+    ],
+    "Cloud Computing": [
+      {
+        "name": "AWS Certified Solutions Architect",
+        "provider": "Amazon",
+        "duration": "Self-paced",
+        "level": "Intermediate",
+        "cost": "USD 150/exam"
+      },
+      {
+        "name": "Microsoft Certified: Azure Solutions Architect Expert",
+        "provider": "Microsoft",
+        "duration": "Self-paced",
+        "level": "Advanced",
+        "cost": "USD 165/exam"
+      },
+      {
+        "name": "Google Cloud Professional Cloud Architect",
+        "provider": "Google",
+        "duration": "Self-paced",
+        "level": "Advanced",
+        "cost": "USD 200/exam"
+      }
+    ]
+  }

@@ -1,0 +1,36 @@
+{
+    "in_demand_skills_2025": [
+      "AI/ML Engineering",
+      "Data Science",
+      "Cloud Computing",
+      "Cybersecurity",
+      "DevOps",
+      "Quantum Computing",
+      "Prompt Engineering",
+      "AI Ethics",
+      "Data Visualization",
+      "Statistical Analysis",
+      "Big Data Technologies"
+    ],
+    "emerging_roles": [
+      "AI Prompt Engineer",
+      "Machine Learning Operations",
+      "Quantum Computing Specialist",
+      "AI Ethics Officer",
+      "Automation Architect",
+      "Digital Transformation Manager"
+    ],
+    "industry_trends": {
+      "technology": ["AI Integration", "Cloud Migration", "Cybersecurity Focus"],
+      "healthcare": ["Telemedicine", "Health Analytics", "Personalized Medicine"],
+      "finance": ["FinTech", "Blockchain", "Algorithmic Trading"],
+      "education": ["E-Learning", "Adaptive Learning", "Gamification"],
+      "marketing": ["Influencer Marketing", "Content Personalization", "AI-Driven Analytics"]
+    },
+    "salary_trends": {
+      "Data Scientist": {"entry": 80000, "mid": 120000, "senior": 160000},
+      "AI Engineer": {"entry": 100000, "mid": 140000, "senior": 180000},
+      "Cloud Architect": {"entry": 90000, "mid": 130000, "senior": 170000},
+      "Cybersecurity Analyst": {"entry": 85000, "mid": 120000, "senior": 155000}
+    }
+  }

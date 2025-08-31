@@ -1,0 +1,129 @@
+{
+    "Data Science": {
+      "foundations": [
+        "Statistics Fundamentals",
+        "Python Programming",
+        "Data Wrangling",
+        "SQL",
+        "Data Visualization"
+      ],
+      "intermediate": [
+        "Machine Learning",
+        "Data Visualization Advanced",
+        "Big Data Tools (Hadoop, Spark)",
+        "Experimental Design"
+      ],
+      "advanced": [
+        "Deep Learning",
+        "Natural Language Processing",
+        "Cloud ML Services",
+        "Reinforcement Learning"
+      ],
+      "resources": {
+        "courses": [
+          "Coursera: Data Science Professional Certificate",
+          "edX: Harvard CS109 Data Science",
+          "Udacity: Data Scientist Nanodegree"
+        ],
+        "books": [
+          "Python for Data Analysis by Wes McKinney",
+          "Introduction to Statistical Learning by James et al.",
+          "Hands-On Machine Learning with Scikit-Learn and TensorFlow by Aurélien Géron"
+        ],
+        "projects": [
+          "Predictive analysis on public dataset",
+          "End-to-end ML pipeline",
+          "Data visualization dashboard"
+        ]
+      },
+      "timeline": {
+        "foundations": "1-3 months",
+        "intermediate": "3-6 months",
+        "advanced": "6-12 months"
+      }
+    },
+    "AI Engineering": {
+      "foundations": [
+        "Python Programming",
+        "Linear Algebra",
+        "Calculus",
+        "Probability and Statistics"
+      ],
+      "intermediate": [
+        "Machine Learning",
+        "Deep Learning Fundamentals",
+        "Neural Networks",
+        "Data Preprocessing"
+      ],
+      "advanced": [
+        "Natural Language Processing",
+        "Computer Vision",
+        "Reinforcement Learning",
+        "Generative Adversarial Networks"
+      ],
+      "resources": {
+        "courses": [
+          "Coursera: Deep Learning Specialization",
+          "Fast.ai: Practical Deep Learning for Coders",
+          "Stanford CS231n: Convolutional Neural Networks for Visual Recognition"
+        ],
+        "books": [
+          "Deep Learning by Ian Goodfellow",
+          "Pattern Recognition and Machine Learning by Christopher Bishop",
+          "Reinforcement Learning: An Introduction by Sutton and Barto"
+        ],
+        "projects": [
+          "Image classification model",
+          "Chatbot using NLP",
+          "Reinforcement learning agent"
+        ]
+      },
+      "timeline": {
+        "foundations": "2-4 months",
+        "intermediate": "4-8 months",
+        "advanced": "8-15 months"
+      }
+    },
+    "Product Management": {
+      "foundations": [
+        "Product Lifecycle",
+        "Market Research",
+        "User Experience (UX) Fundamentals",
+        "Agile Methodology"
+      ],
+      "intermediate": [
+        "Product Strategy",
+        "Data-Driven Decision Making",
+        "Stakeholder Management",
+        "Prioritization Techniques"
+      ],
+      "advanced": [
+        "Product Leadership",
+        "Advanced Analytics",
+        "Go-to-Market Strategies",
+        "Product Portfolio Management"
+      ],
+      "resources": {
+        "courses": [
+          "Coursera: Digital Product Management",
+          "Udacity: Product Manager Nanodegree",
+          "edX: Product Management Essentials"
+        ],
+        "books": [
+          "Inspired: How to Create Tech Products Customers Love by Marty Cagan",
+          "The Lean Product Playbook by Dan Olsen",
+          "Hooked: How to Build Habit-Forming Products by Nir Eyal"
+        ],
+        "projects": [
+          "Create a product roadmap",
+          "Conduct user interviews and synthesize findings",
+          "Define and prioritize a product backlog"
+        ]
+      },
+      "timeline": {
+        "foundations": "1-2 months",
+        "intermediate": "3-5 months",
+        "advanced": "6-10 months"
+      }
+    }
+  }

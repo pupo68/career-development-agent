@@ -1,0 +1,98 @@
+{
+    "United States": {
+      "Data Scientist": {
+        "entry_level": 80000,
+        "mid_level": 120000,
+        "senior_level": 160000,
+        "lead_level": 200000
+      },
+      "AI Engineer": {
+        "entry_level": 100000,
+        "mid_level": 140000,
+        "senior_level": 180000,
+        "lead_level": 220000
+      },
+      "Software Engineer": {
+        "entry_level": 85000,
+        "mid_level": 110000,
+        "senior_level": 150000,
+        "lead_level": 180000
+      },
+      "Product Manager": {
+        "entry_level": 90000,
+        "mid_level": 130000,
+        "senior_level": 170000,
+        "lead_level": 210000
+      },
+      "Cloud Architect": {
+        "entry_level": 95000,
+        "mid_level": 130000,
+        "senior_level": 165000,
+        "lead_level": 200000
+      }
+    },
+    "Brazil": {
+      "Data Scientist": {
+        "entry_level": 60000,
+        "mid_level": 90000,
+        "senior_level": 130000,
+        "lead_level": 180000
+      },
+      "AI Engineer": {
+        "entry_level": 70000,
+        "mid_level": 100000,
+        "senior_level": 150000,
+        "lead_level": 200000
+      },
+      "Software Engineer": {
+        "entry_level": 50000,
+        "mid_level": 80000,
+        "senior_level": 120000,
+        "lead_level": 160000
+      },
+      "Product Manager": {
+        "entry_level": 70000,
+        "mid_level": 100000,
+        "senior_level": 140000,
+        "lead_level": 190000
+      },
+      "Cloud Architect": {
+        "entry_level": 80000,
+        "mid_level": 110000,
+        "senior_level": 150000,
+        "lead_level": 200000
+      }
+    },
+    "Europe": {
+      "Data Scientist": {
+        "entry_level": 45000,
+        "mid_level": 65000,
+        "senior_level": 90000,
+        "lead_level": 120000
+      },
+      "AI Engineer": {
+        "entry_level": 50000,
+        "mid_level": 75000,
+        "senior_level": 100000,
+        "lead_level": 130000
+      },
+      "Software Engineer": {
+        "entry_level": 40000,
+        "mid_level": 60000,
+        "senior_level": 85000,
+        "lead_level": 110000
+      },
+      "Product Manager": {
+        "entry_level": 50000,
+        "mid_level": 75000,
+        "senior_level": 100000,
+        "lead_level": 130000
+      },
+      "Cloud Architect": {
+        "entry_level": 55000,
+        "mid_level": 80000,
+        "senior_level": 110000,
+        "lead_level": 140000
+      }
+    }
+  }

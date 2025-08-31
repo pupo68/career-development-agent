@@ -1,0 +1,5 @@
+agno
+streamlit
+chromadb
+python-dotenv
+pytest
