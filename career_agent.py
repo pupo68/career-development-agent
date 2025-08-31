@@ -1,9 +1,25 @@
 import json
 import os
+import google.generativeai as genai
 from datetime import datetime
+import streamlit as st
 
 class CareerDevelopmentAgent:
     def __init__(self):
+        # Obter a chave API do Gemini dos segredos do Streamlit
+        try:
+            api_key = st.secrets["GEMINI_API_KEY"]
+        except (KeyError, AttributeError):
+            # Fallback para variável de ambiente (desenvolvimento local)
+            api_key = os.getenv("GEMINI_API_KEY")
+            
+        if not api_key:
+            st.error("Chave API do Gemini não encontrada. Configure GEMINI_API_KEY nos segredos do Streamlit.")
+            raise ValueError("GEMINI_API_KEY não configurada")
+        
+        # Configurar a API do Gemini
+        genai.configure(api_key=api_key)
+        self.model = genai.GenerativeModel('gemini-pro')
         self.knowledge = self._load_knowledge()
     
     def _load_knowledge(self):
@@ -25,16 +41,42 @@ class CareerDevelopmentAgent:
                 with open(filepath, 'r', encoding='utf-8') as f:
                     knowledge[key] = json.load(f)
             except FileNotFoundError:
-                print(f"Arquivo {filename} não encontrado em {knowledge_dir}")
+                st.warning(f"Arquivo {filename} não encontrado em {knowledge_dir}")
                 knowledge[key] = {}
             except json.JSONDecodeError:
-                print(f"Erro ao decodificar JSON do arquivo {filename}")
+                st.error(f"Erro ao decodificar JSON do arquivo {filename}")
                 knowledge[key] = {}
         
         return knowledge
     
     def analyze_profile(self, user_profile):
-        """Analisa o perfil do usuário e gera um plano de desenvolvimento de carreira"""
+        """Analisa o perfil do usuário e gera um plano de desenvolvimento de carreira usando Gemini"""
+        # Construir o prompt com base no perfil e no conhecimento
+        prompt = self._build_prompt(user_profile)
+        
+        try:
+            # Configurar parâmetros de geração
+            generation_config = {
+                "temperature": 0.7,
+                "top_p": 0.8,
+                "top_k": 40,
+                "max_output_tokens": 2048,
+            }
+            
+            # Gerar resposta
+            response = self.model.generate_content(
+                prompt,
+                generation_config=generation_config,
+                stream=False
+            )
+            
+            return response.text
+            
+        except Exception as e:
+            return f"Erro ao gerar plano: {str(e)}\n\nPlano alternativo:\n{self._generate_fallback_plan(user_profile)}"
+    
+    def _build_prompt(self, user_profile):
+        """Constroi o prompt para o Gemini com base no perfil do usuário e no conhecimento"""
         # Extrai informações do perfil do usuário
         current_skills = user_profile.get('current_skills', [])
         career_goals = user_profile.get('career_goals', [])
@@ -42,121 +84,81 @@ class CareerDevelopmentAgent:
         years_experience = user_profile.get('years_experience', 0)
         learning_preferences = user_profile.get('learning_preferences', [])
         time_commitment = user_profile.get('time_commitment', '')
+        additional_info = user_profile.get('additional_info', '')
         
-        # Inicia a construção da resposta
-        response = "# Plano de Desenvolvimento de Carreira\n\n"
+        # Formatar o conhecimento para incluir no prompt
+        trends_str = json.dumps(self.knowledge.get('trends', {}), ensure_ascii=False, indent=2)
+        learning_paths_str = json.dumps(self.knowledge.get('learning_paths', {}), ensure_ascii=False, indent=2)
+        salary_data_str = json.dumps(self.knowledge.get('salary_data', {}), ensure_ascii=False, indent=2)
+        certifications_str = json.dumps(self.knowledge.get('certifications', {}), ensure_ascii=False, indent=2)
         
-        # Adiciona uma análise personalizada
-        response += self._generate_analysis(current_skills, career_goals, industry, years_experience)
+        # Construir o prompt
+        prompt = f"""
+        Você é um consultor de carreira especializado. Sua missão é ajudar profissionais a alcançarem seus objetivos.
+
+        Com base nas informações do usuário abaixo e no conhecimento da base de dados, crie um plano de desenvolvimento de carreira detalhado.
+
+        PERFIL DO USUÁRIO:
+        - Habilidades atuais: {current_skills}
+        - Objetivos de carreira: {career_goals}
+        - Setor/Indústria: {industry}
+        - Anos de experiência: {years_experience}
+        - Preferências de aprendizado: {learning_preferences}
+        - Disponibilidade semanal: {time_commitment}
+        - Informações adicionais: {additional_info}
+
+        BASE DE CONHECIMENTO (use essas informações para enriquecer sua análise):
         
-        # Adiciona recomendações de aprendizado
-        response += self._generate_learning_recommendations(career_goals, learning_preferences, time_commitment)
+        === TENDÊNCIAS DO MERCADO ===
+        {trends_str}
         
-        # Adiciona informações sobre salários e certificações, se disponíveis
-        response += self._generate_additional_info(career_goals, industry)
+        === CAMINHOS DE APRENDIZADO ===
+        {learning_paths_str}
         
-        return response
+        === DADOS SALARIAIS ===
+        {salary_data_str}
+        
+        === CERTIFICAÇÕES ===
+        {certifications_str}
+
+        FORMATO DE RESPOSTA:
+        - Use markdown para organização
+        - Divida em seções claras: Análise de Perfil, Recomendações de Aprendizado, Timeline, Métricas de Sucesso
+        - Seja específico e forneça exemplos concretos
+        - Inclua prazos realistas baseados na disponibilidade do usuário
+        - Sugira recursos específicos (cursos, livros, projetos) sempre que possível
+        - Considere as preferências de aprendizado do usuário
+        - Inclua estimativas salariais quando relevante
+
+        Forneça um plano abrangente e acionável.
+        """
+        
+        return prompt
     
-    def _generate_analysis(self, current_skills, career_goals, industry, years_experience):
-        """Gera a análise de perfil"""
-        section = "## Análise de Perfil\n\n"
+    def _generate_fallback_plan(self, user_profile):
+        """Gera um plano de fallback caso a API do Gemini falhe"""
+        current_skills = user_profile.get('current_skills', [])
+        career_goals = user_profile.get('career_goals', [])
         
-        # Análise de habilidades atuais
-        section += f"- **Habilidades atuais**: {', '.join(current_skills) if current_skills else 'Nenhuma informada'}\n"
-        section += f"- **Objetivos de carreira**: {', '.join(career_goals) if career_goals else 'Nenhum informado'}\n"
-        section += f"- **Setor/Indústria**: {industry}\n"
-        section += f"- **Anos de experiência**: {years_experience}\n\n"
+        return f"""
+        # Plano de Desenvolvimento de Carreira
         
-        # Identifica gaps de habilidades com base nas tendências
-        in_demand_skills = self.knowledge.get('trends', {}).get('in_demand_skills_2025', [])
-        missing_skills = [skill for skill in in_demand_skills if skill not in current_skills]
+        ## Análise de Perfil
+        Com base nas suas habilidades atuais: {', '.join(current_skills)}
+        e seus objetivos: {', '.join(career_goals)}
         
-        if missing_skills:
-            section += "### Habilidades em Alta Demandadas\n"
-            section += "Com base nas tendências atuais, as seguintes habilidades estão em alta e podem ser úteis para seus objetivos:\n"
-            for skill in missing_skills[:5]:  # Limita a 5 habilidades para não ficar muito longo
-                section += f"- {skill}\n"
-            section += "\n"
+        ## Recomendações
+        1. Desenvolva habilidades em {career_goals[0] if career_goals else 'sua área de interesse'}
+        2. Participe de cursos online na área
+        3. Construa projetos práticos para seu portfolio
         
-        return section
-    
-    def _generate_learning_recommendations(self, career_goals, learning_preferences, time_commitment):
-        """Gera recomendações de aprendizado personalizadas"""
-        section = "## Recomendações de Aprendizado\n\n"
+        ## Timeline Estimada
+        - 3-6 meses para desenvolvimento das habilidades básicas
+        - 6-12 meses para especialização
         
-        # Se não houver objetivos de carreira, retorna uma mensagem genérica
-        if not career_goals:
-            section += "Para começar, defina alguns objetivos de carreira para receber recomendações personalizadas.\n\n"
-            return section
-        
-        # Para cada objetivo de carreira, busca recomendações
-        for goal in career_goals:
-            # Tenta encontrar um caminho de aprendizado correspondente
-            learning_path = self.knowledge.get('learning_paths', {}).get(goal, {})
-            if learning_path:
-                section += f"### Para se tornar {goal}\n"
-                
-                # Recursos recomendados
-                resources = learning_path.get('resources', {})
-                if resources:
-                    section += "#### Recursos Recomendados:\n"
-                    if resources.get('courses'):
-                        section += "- **Cursos**:\n"
-                        for course in resources['courses'][:3]:
-                            section += f"  - {course}\n"
-                    if resources.get('books'):
-                        section += "- **Livros**:\n"
-                        for book in resources['books'][:3]:
-                            section += f"  - {book}\n"
-                    if resources.get('projects'):
-                        section += "- **Projetos**:\n"
-                        for project in resources['projects'][:3]:
-                            section += f"  - {project}\n"
-                
-                # Timeline baseada na disponibilidade de tempo
-                timeline = learning_path.get('timeline', {})
-                if timeline and time_commitment:
-                    section += f"#### Timeline Estimada ({time_commitment} por semana):\n"
-                    for stage, duration in timeline.items():
-                        section += f"- **{stage}**: {duration}\n"
-                
-                section += "\n"
-            else:
-                section += f"### {goal}\n"
-                section += f"Não encontramos um caminho de aprendizado específico para {goal}. Recomendamos buscar cursos e recursos genéricos na área.\n\n"
-        
-        return section
-    
-    def _generate_additional_info(self, career_goals, industry):
-        """Gera informações adicionais sobre salários e certificações"""
-        section = "## Informações Adicionais\n\n"
-        
-        # Informações salariais
-        salary_data = self.knowledge.get('salary_data', {})
-        if salary_data:
-            section += "### Faixas Salariais (por ano, em USD)\n"
-            # Mostra salários para os objetivos de carreira, se disponíveis
-            for goal in career_goals:
-                # Tenta encontrar dados salariais para o objetivo
-                found = False
-                for region, jobs in salary_data.items():
-                    if goal in jobs:
-                        section += f"- **{goal}** em {region}: Entry: ${jobs[goal]['entry_level']:,} | Senior: ${jobs[goal]['senior_level']:,}\n"
-                        found = True
-                        break
-                if not found:
-                    section += f"- **{goal}**: Dados salariais não disponíveis.\n"
-            section += "\n"
-        
-        # Certificações
-        certifications = self.knowledge.get('certifications', {})
-        if certifications:
-            section += "### Certificações Recomendadas\n"
-            for goal in career_goals:
-                if goal in certifications:
-                    section += f"- **{goal}**:\n"
-                    for cert in certifications[goal][:2]:  # Limita a 2 certificações por objetivo
-                        section += f"  - {cert['name']} ({cert['provider']}) - Custo: {cert['cost']}\n"
-            section += "\n"
-        
-        return section
+        ## Recursos Recomendados
+        - Coursera: Cursos de especialização
+        - Udemy: Cursos práticos
+        - Livros da área
+        - Projetos open source no GitHub
+        """
